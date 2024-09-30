@@ -52,3 +52,14 @@ background-attachment: fixed;
   
   }
 }
+
+.seccion-modal-votantes{
+  justify-content: center;
+  text-align: center;
+}
+.btn-ingresar-votantes{
+  background-color: antiquewhite;
+  color: #000;
+  
+
+}
