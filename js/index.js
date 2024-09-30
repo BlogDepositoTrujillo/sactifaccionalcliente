@@ -1,3 +1,32 @@
+/***reloj */
+// Establece la fecha objetivo (aquí puedes cambiar la fecha y hora objetivo)
+const targetDate = new Date("Oct 30, 2024 15:00:00").getTime();
+
+// Actualiza el contador cada 1 segundo
+const countdown = setInterval(function() {
+
+    // Obtén la fecha y hora actual
+    const now = new Date().getTime();
+
+    // Calcula la diferencia entre la fecha actual y la fecha objetivo
+    const timeLeft = targetDate - now;
+
+    // Calcula los días, horas, minutos y segundos restantes
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    // Muestra el resultado en el div con id="countdown"
+    document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+    + minutes + "m " + seconds + "s ";
+
+    // Si el tiempo ha terminado, muestra el texto
+    if (timeLeft < 0) {
+        clearInterval(countdown);
+        document.getElementById("countdown").innerHTML = "¡Tiempo finalizado!";
+    }
+}, 1000);
 var database = [
   { title: "Sika 1 1kg", file: "archivo1.html" },
   { title: "Cemento gris uso general cemex 50kg", file: "archivo2.html" },/***CEMENTO GRIS USO GENERAL CEMEX 50KGs */
@@ -232,3 +261,4 @@ const portfolioLightbox = GLightbox({
 
 
 /***aa */
+
