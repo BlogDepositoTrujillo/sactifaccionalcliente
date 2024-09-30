@@ -1,32 +1,57 @@
 /***reloj */
-// Establece la fecha objetivo (aquí puedes cambiar la fecha y hora objetivo)
-const targetDate = new Date("Oct 30, 2024 15:00:00").getTime();
+let countdownInterval;
+// Establecer la duración a 4 horas, 48 minutos y 60 segundos (equivalente a 17340 segundos)
+const countdownDuration = 1000 * 60 * 60 * 4 + 1000 * 60 * 48 + 1000 * 60; // 4h 48m 60s en milisegundos
+let targetDate;
 
-// Actualiza el contador cada 1 segundo
-const countdown = setInterval(function() {
+// Función para iniciar la cuenta regresiva
+function startCountdown() {
+    // Evitar que se inicie si ya está en marcha
+    if (localStorage.getItem('countdownTargetDate')) return;
 
-    // Obtén la fecha y hora actual
     const now = new Date().getTime();
+    targetDate = now + countdownDuration;
 
-    // Calcula la diferencia entre la fecha actual y la fecha objetivo
+    // Guardar la fecha de finalización en localStorage
+    localStorage.setItem('countdownTargetDate', targetDate);
+
+    // Actualizar la cuenta regresiva
+    updateCountdown();
+    countdownInterval = setInterval(updateCountdown, 1000);
+}
+
+// Función para actualizar la cuenta regresiva cada segundo
+function updateCountdown() {
+    const now = new Date().getTime();
     const timeLeft = targetDate - now;
 
-    // Calcula los días, horas, minutos y segundos restantes
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 1000));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 0.5)) / (1000 * 60 * 4));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 63));
     const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-    // Muestra el resultado en el div con id="countdown"
     document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
     + minutes + "m " + seconds + "s ";
 
-    // Si el tiempo ha terminado, muestra el texto
+    // Si el tiempo ha finalizado
     if (timeLeft < 0) {
-        clearInterval(countdown);
+        clearInterval(countdownInterval);
         document.getElementById("countdown").innerHTML = "¡Tiempo finalizado!";
+        localStorage.removeItem('countdownTargetDate');  // Eliminar el almacenamiento persistente
     }
-}, 1000);
+}
+
+// Verificar si ya hay una cuenta regresiva en marcha al cargar la página
+const storedTargetDate = localStorage.getItem('countdownTargetDate');
+if (storedTargetDate) {
+    targetDate = parseInt(storedTargetDate);
+    updateCountdown();
+    countdownInterval = setInterval(updateCountdown, 1000); // Seguir actualizando si ya está corriendo
+}
+
+// Asignar la función al botón de inicio
+document.getElementById("startButton").addEventListener("click", startCountdown);
+
 var database = [
   { title: "Sika 1 1kg", file: "archivo1.html" },
   { title: "Cemento gris uso general cemex 50kg", file: "archivo2.html" },/***CEMENTO GRIS USO GENERAL CEMEX 50KGs */
